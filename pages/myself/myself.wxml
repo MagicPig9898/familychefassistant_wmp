@@ -1,0 +1,19 @@
+<!-- pages/myself/myself.wxml -->
+<view class="container">
+
+<!-- 上部分 -->
+<view class="header">
+  <view class="avatar">
+   
+  </view>
+</view>
+
+<!-- 下部分 -->
+<view class="content">
+  <!-- bindtap等价于onclick -->
+  <button wx:if="{{!loginInfo}}" class="login-btn" bindtap="handleLogin">  
+    一键登录
+  </button>
+</view>
+
+</view>

@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/myself/myself"
+  ],
+  "window": {
+    "navigationBarTitleText": "我的小程序"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/myself/myself",
+        "text": "我的"
+      }
+    ]
+  }
+}

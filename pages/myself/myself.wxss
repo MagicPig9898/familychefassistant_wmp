@@ -1,0 +1,60 @@
+/* pages/myself/myself.wxss */
+.container {
+   /* 让容器高度占满整个屏幕（vh = 视口高度） */
+  height: 100vh; 
+   /* 使用 flex 布局（小程序最常用布局方式） */
+  display: flex; 
+   /*  设置主轴为“竖直方向”（默认是横向） */
+  flex-direction: column;  
+}
+
+.header {
+  height: 40vh;  /* 占整个页面 40% 的高度 */
+  background-color: #FFD700;  /* 背景颜色（黄色） */
+  width: 100%;  /* 横向铺满 */
+  display: flex;  /* 使用 flex 布局 */
+  justify-content: center;  /* 水平居中（主轴是横向时） */
+  align-items: center;  /* 垂直居中 */
+}
+
+.content {
+  flex: 1;  
+  /* 占据剩余空间（比写固定高度更灵活） */
+  display: flex;  
+  /* 使用 flex 布局 */
+  justify-content: center;  
+  /* 水平居中 */
+  align-items: center;  
+  /* 垂直居中 */
+}
+
+.avatar {
+  width: 150rpx;  
+  /* 宽度（rpx 是小程序单位，适配不同屏幕） */
+  height: 150rpx;  
+  /* 高度 */
+  background-color: #ffffff;  
+  /* 背景白色（未登录时的占位） */
+  border-radius: 50%;  
+  /* 关键：让正方形变成圆形 */
+  overflow: hidden;  
+  /* 防止图片超出圆形区域（后面放头像用） */
+}
+
+.login-btn {
+  width: 60%;  
+  /* 按钮宽度占父容器 50% */
+  background-color: #07c160;  
+  /* 微信绿色（常用主色） */
+  color: #ffffff;  
+  /* 文字颜色白色 */
+  border-radius: 50rpx;  
+  /* 圆角按钮（数值越大越圆） */
+  text-align: center;  
+  /* 文字水平居中 */
+  padding: 12rpx 0;  
+  /* 上下内边距（让按钮更高） */
+  font-size: 32rpx;  
+  /* 字体大小 */
+}
+

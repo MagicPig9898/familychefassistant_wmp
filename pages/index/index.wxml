@@ -1,0 +1,34 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 左右布局容器 -->
+  <view class="main">
+
+    <!-- 左侧分类 -->
+    <view class="left">
+      <view 
+        wx:if="{{loginInfo}}"
+        wx:for="{{categories}}" 
+        wx:key="id"
+        class="category-item {{currentCategoryId === item.id ? 'active' : ''}}"
+        bindtap="selectCategory"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+
+    <!-- 右侧菜品 -->
+    <view class="right">
+      <view 
+        wx:if="{{loginInfo}}"
+        wx:for="{{foods}}" 
+        wx:key="id"
+        class="food-item"
+      >
+        <text class="food-name">{{item.name}}</text>
+        <text class="food-price">￥{{item.price}}</text>
+      </view>
+    </view>
+
+  </view>
+</view>
