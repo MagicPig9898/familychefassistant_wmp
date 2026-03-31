@@ -35,28 +35,27 @@ Page({
 
   // onLoad 当页面加载时自动执行，只会执行一次
   onLoad() {
-    // 页面加载时检查是否已登录
+    console.log('首页准备加载...');
+    // 页面加载时检查是否已授权
     this.checkAuth();
+    // 恢复登录信息
+    loginApi.revertLoginInfo();
     console.log('首页加载了');
   },
 
+  // onShow 当页面显示时自动执行，每次进入页面都会执行
   onShow() {
-    loginApi.revertUserInfo();
-    if (loginApi.isLogined()) {
-      // 判断是否过期
-      if (!loginApi.isTokenValid(app.globalData.loginInfo.token)) {
-        console.log("登录已过期，请重新登录")
-        wx.showToast({
-          title: '登陆已过期，请重新登录',
-          icon: 'none'
-        });
-        app.globalData.loginInfo = null
-      }
-    }
+    console.log('首页准备显示...');
+    if (!app.globalData.loginInfo) {
+      console.log("没有登录过，直接跳转去登录页")
+      wx.switchTab({ url: '/pages/myself/myself' });
+      return;
+    } 
     this.setData({
       userInfo: app.globalData.userInfo,
       loginInfo: app.globalData.loginInfo 
     });
+    console.log('首页显示了');
   },
 
   // 点击分类
@@ -83,6 +82,7 @@ Page({
       this.setData({
         userInfo: app.globalData.userInfo  
       });
+      return;
     }
     if (!app.globalData.userInfo) {  
       const sUserInfo = wx.getStorageSync('userInfo')
@@ -93,7 +93,7 @@ Page({
           userInfo: app.globalData.userInfo  
         });
       } else {
-        // 未授权，弹窗授权， 异步， 如果取消收权先跳去登录页
+        // 未授权，弹窗授权
         this.showAuthModal();
       }
     }
@@ -114,9 +114,6 @@ Page({
             title: '需要授权才能使用完整功能',
             icon: 'none'
           });
-          // 跳转到我的页面
-          console.log("跳转到myself页面")
-          wx.switchTab({ url: '/pages/myself/myself' });
         }
       }
     });

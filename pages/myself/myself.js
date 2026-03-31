@@ -18,36 +18,33 @@ Page({
     success: (loginRes) => {
       const code = loginRes.code;
       console.log("code = "+ code)
-      const res = loginApi.mockLogin(code);
-      if (res.statusCode == 200) {
-        console.log('登录成功：', res.data)
-        app.globalData.loginInfo = res.data;  // 内存中，小程序关闭就丢失
-        wx.setStorageSync('loginInfo', res.data);  // 手机硬盘里，永久保存，除非主动删除
-        this.onShow();  // 重新走生命周期
-      } else {
-        console.log("statusCode = " + res.statusCode)
-        wx.showToast({
-          title: '登录失败',
-          icon: 'none'
-        })
-      }
-      // wx.request({
-        // url: 'https://127.0.0.1:8082/login',
-        // method: 'POST',
-        // data: {
-        //   code: code
-        // },
-        // success: (result) => {
-        //   console.log('后端返回：', result.data)
-        // },
-        // fail: () => {
-        //   console.log("请求login接口失败")
-        //   wx.showToast({
-        //     title: '登录失败',
-        //     icon: 'none'
-        //   });
-        // }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/api/v1/users/wxlogin',
+        method: 'POST',
+        data: { code: code },
+        success: (res) => {
+          if (res.statusCode === 200) {
+            console.log('登录成功：', res.data)
+            app.globalData.loginInfo = res.data;  // 内存中，小程序关闭就丢失
+            wx.setStorageSync('loginInfo', res.data);  // 手机硬盘里，永久保存，除非主动删除
+            this.onShow();  // 重新走生命周期
+          } else {
+            console.log("statusCode = " + res.statusCode)
+            console.log("err: " + res.data.msg)
+            wx.showToast({
+              title: '登录失败',
+              icon: 'none'
+            })
+          }
+        },
+        fail: (err) => {
+          console.log('请求后端登录接口失败：', err)
+          wx.showToast({
+            title: '登录失败',
+            icon: 'none'
+          })
+        }
+      });
     },
     fail: () => {
       console.log('获取登录code失败')
@@ -67,30 +64,18 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {
-
-  },
+  onReady() {},
 
   /**
    * 生命周期函数--页面“被看到时”执行（多次）
    */
   onShow() {
-    loginApi.revertUserInfo();
-    if (loginApi.isLogined()) {
-      // 判断是否过期
-      if (!loginApi.isTokenValid(app.globalData.loginInfo.token)) {
-        console.log("登录已过期，请重新登录")
-        wx.showToast({
-          title: '登陆已过期，请重新登录',
-          icon: 'none'
-        });
-        app.globalData.loginInfo = null
-      }
-    }
+    console.log('myself页面准备显示...');
     this.setData({
       userInfo: app.globalData.userInfo,
-      loginInfo: app.globalData.loginInfo
+      loginInfo: app.globalData.loginInfo 
     });
+    console.log('myself页面显示了');
   },
 
   /**

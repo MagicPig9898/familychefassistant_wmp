@@ -37,12 +37,30 @@ function parseToken(token) {
 }
 
 /**
- * 模拟校验 token 是否有效
+ * 校验 token 是否有效（调用后端接口）
+ * @param {string} token
+ * @returns {Promise<{valid: boolean, newToken: string|null}>}
  */
 function isTokenValid(token) {
-  const data = parseToken(token);
-  if (!data) return false;
-  return data.expireAt > Date.now();
+  return new Promise((resolve) => {
+    wx.request({
+      url: 'http://localhost:8080/api/v1/users/validtoken',
+      method: 'POST',
+      data: { token: token },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log("校验token成功：", res.data);
+          resolve({ valid: true, newToken: res.data.token || null });
+        } else {
+          resolve({ valid: false, newToken: null });
+        }
+      },
+      fail: (err) => {
+        console.log('校验token请求失败：', err);
+        resolve({ valid: false, newToken: null });
+      }
+    });
+  });
 }
 
 /**
@@ -93,48 +111,23 @@ function getUserProfile() {
         title: '授权成功',
         icon: 'success'
       });
-      wx.switchTab({ url: '/pages/myself/myself' });
     },
     fail: () => {  // 请求拒绝或失败的回调
       wx.showToast({
         title: '授权失败',
         icon: 'none'
       });
-      // 跳转到我的页面
-      console.log("跳转到myself页面")
-      wx.switchTab({ url: '/pages/myself/myself' });
     }
   });
 }
 
-// 恢复授权信息，用于当重新进入小程序时，恢复全局变量
-function revertUserInfo() {
+// 恢复登录信息，用于当重新进入小程序时，恢复全局变量
+function revertLoginInfo() {
   const app = getApp();
-  if (!app.globalData.userInfo) {
-    const sUserInfo = wx.getStorageSync('userInfo')
-    if (sUserInfo) {
-      app.globalData.userInfo = sUserInfo
-    }
-    // 没有授权信息也不影响
-  }
-}
-
-function isLogined() {
-  const app = getApp();
-  if (app.globalData.loginInfo) {
-    return true
-  } else {
-    const sloginInfo = wx.getStorageSync('loginInfo') 
+  if (!app.globalData.loginInfo) {
+    const sloginInfo = wx.getStorageSync('loginInfo')
     if (sloginInfo) {
-      console.log("从硬盘恢复登录信息...")
       app.globalData.loginInfo = sloginInfo
-      return true
-    } else {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
     }
   }
 }
@@ -145,6 +138,5 @@ module.exports = {
   parseToken,
   isTokenValid,
   getUserProfile,
-  revertUserInfo,
-  isLogined
+  revertLoginInfo
 };
