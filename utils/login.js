@@ -107,6 +107,7 @@ function getUserProfile() {
       // 保存用户信息
       app.globalData.userInfo = res.userInfo;  // 内存中，小程序关闭就丢失
       wx.setStorageSync('userInfo', res.userInfo);  // 手机硬盘里，永久保存，除非主动删除
+      // 保存授权信息
       wx.showToast({
         title: '授权成功',
         icon: 'success'
@@ -128,6 +129,7 @@ function revertLoginInfo() {
     const sloginInfo = wx.getStorageSync('loginInfo')
     if (sloginInfo) {
       app.globalData.loginInfo = sloginInfo
+      console.log("登录恢复")
     }
   }
 }

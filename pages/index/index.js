@@ -6,6 +6,9 @@ Page({
     userInfo: null,
     loginInfo: null,
 
+    aiBtnX: 280,  // 初始 x 坐标（单位 px，可按屏幕宽度调整）
+    aiBtnY: 300,  // 初始 y 坐标
+
     // 分类列表
     categories: [
       { id: 1, name: 'A' },
@@ -47,8 +50,11 @@ Page({
   onShow() {
     console.log('首页准备显示...');
     if (!app.globalData.loginInfo) {
-      console.log("没有登录过，直接跳转去登录页")
-      wx.switchTab({ url: '/pages/myself/myself' });
+      console.log("没有登录过，提示先登录")
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
       return;
     } 
     this.setData({
@@ -56,6 +62,13 @@ Page({
       loginInfo: app.globalData.loginInfo 
     });
     console.log('首页显示了');
+  },
+
+  // 点击 AI 按钮
+  onAiBtnTap() {
+    console.log('点击了 AI 按钮');
+    // 跳转到 AI 页面，或弹出对话框
+    // wx.navigateTo({ url: '/pages/ai/ai' });
   },
 
   // 点击分类
@@ -107,9 +120,11 @@ Page({
       success: (res) => {
         if (res.confirm) {
           // 用户点击确定，调用微信授权
+          console.log("用户同意授权")
           loginApi.getUserProfile();
         } else {
           // 用户取消，可以再次提醒或退出
+          console.log("用户取消授权")
           wx.showToast({
             title: '需要授权才能使用完整功能',
             icon: 'none'

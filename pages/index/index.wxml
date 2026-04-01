@@ -31,4 +31,17 @@
     </view>
 
   </view>
+
+  <!-- AI 悬浮按钮（可拖拽） -->
+  <movable-area class="movable-area">
+    <movable-view 
+      class="ai-btn" 
+      direction="all" 
+      x="{{aiBtnX}}" 
+      y="{{aiBtnY}}"
+      bindtap="onAiBtnTap"
+    >
+      <image class="ai-btn-img" src="/images/ai-icon.png" mode="aspectFill" />
+    </movable-view>
+  </movable-area>
 </view>

@@ -18,19 +18,30 @@ Page({
     success: (loginRes) => {
       const code = loginRes.code;
       console.log("code = "+ code)
+      app.globalData.userInfo = 
       wx.request({
         url: 'http://localhost:8080/api/v1/users/wxlogin',
         method: 'POST',
-        data: { code: code },
+        data: {
+          code: code,
+          nick_name: app.globalData.userInfo ? app.globalData.userInfo.nickName : '',
+          avatar_url: app.globalData.userInfo ? app.globalData.userInfo.avatarUrl : '',
+          gender: app.globalData.userInfo ? app.globalData.userInfo.gender : 0,
+          city: app.globalData.userInfo ? app.globalData.userInfo.city : '',
+          country: app.globalData.userInfo ? app.globalData.userInfo.country : ''
+        },
         success: (res) => {
           if (res.statusCode === 200) {
-            console.log('登录成功：', res.data)
-            app.globalData.loginInfo = res.data;  // 内存中，小程序关闭就丢失
-            wx.setStorageSync('loginInfo', res.data);  // 手机硬盘里，永久保存，除非主动删除
-            this.onShow();  // 重新走生命周期
+            if (res.data != null && res.data.code == 0) {
+              console.log('登录成功, logininfo = ', res.data.data)
+              app.globalData.loginInfo = res.data.data;  // 内存中，小程序关闭就丢失
+              wx.setStorageSync('loginInfo' + res.data.data);  // 手机硬盘里，永久保存，除非主动删除
+              this.onShow();  // 重新走生命周期
+            } else {
+              console.log("res.statusCode = " + res.statusCode + ", code = " + res.data.code + ", msg = " + res.data.msg)
+            }
           } else {
-            console.log("statusCode = " + res.statusCode)
-            console.log("err: " + res.data.msg)
+            console.log("res = " + res)
             wx.showToast({
               title: '登录失败',
               icon: 'none'

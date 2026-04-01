@@ -57,3 +57,34 @@
   color: #ff6600;
   font-size: 28rpx;
 }
+
+/* AI 悬浮按钮 - 可拖拽区域铺满屏幕 */
+.movable-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;  /* 区域本身不拦截点击 */
+  z-index: 999;
+}
+
+/* 按钮本体 */
+.ai-btn {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  pointer-events: auto;  /* 按钮自身可以点击和拖拽 */
+  overflow: hidden;  /* 圆形裁剪 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+}
+
+/* 按钮里的图片 */
+.ai-btn-img {
+  width: 100%;    /* 填满按钮宽度 */
+  height: 100%;   /* 填满按钮高度 */
+}
