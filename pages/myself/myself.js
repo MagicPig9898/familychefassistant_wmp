@@ -35,7 +35,7 @@ Page({
             if (res.data != null && res.data.code == 0) {
               console.log('登录成功, logininfo = ', res.data.data)
               app.globalData.loginInfo = res.data.data;  // 内存中，小程序关闭就丢失
-              wx.setStorageSync(res.data.data);  // 手机硬盘里，永久保存，除非主动删除
+              wx.setStorageSync("loginInfo", res.data.data);  // 手机硬盘里，永久保存，除非主动删除
               this.onShow();  // 重新走生命周期
             } else {
               console.log("res.statusCode = " + res.statusCode + ", code = " + res.data.code + ", msg = " + res.data.msg)

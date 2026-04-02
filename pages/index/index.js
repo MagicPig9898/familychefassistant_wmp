@@ -11,29 +11,37 @@ Page({
 
     // 分类列表
     categories: [
-      { id: 1, name: 'A' },
-      { id: 2, name: 'B' },
-      { id: 3, name: 'C' }
+      {
+        id: 1,
+        name: '食材大全',
+        children: [
+          { id: 101, name: '蔬菜' },
+          { id: 102, name: '肉类' },
+          { id: 103, name: '生鲜' },
+          { id: 104, name: '菌类' },
+          { id: 105, name: '螃蟹' },
+          { id: 106, name: '贝类' },
+          { id: 107, name: '虾类' }
+        ]
+      }
     ],
-
-    // 当前选中的分类
-    currentCategoryId: 1,
+    expandedCategoryId: null,
+    currentSubCategoryId: null,
 
     // 所有菜品（模拟数据）
     allFoods: [
-      { id: 1, name: 'A1', price: 38, categoryId: 1 },
-      { id: 2, name: 'A2', price: 28, categoryId: 1 },
-      { id: 3, name: 'B1', price: 12, categoryId: 2 },
-      { id: 4, name: 'B2', price: 15, categoryId: 2 },
-      { id: 5, name: 'C1', price: 5, categoryId: 3 },
-      { id: 6, name: 'C2', price: 5, categoryId: 3 }
+      { id: 1, name: '白菜', price: 38, subCategoryId: 101, image: '/images/ai-icon.png' },
+      { id: 2, name: '猪下水', price: 10, subCategoryId: 102, image: '/images/ai-icon.png' },
+      { id: 3, name: '猪里脊', price: 28, subCategoryId: 102, image: '/images/ai-icon.png' },
+      { id: 4, name: '鲈鱼', price: 12, subCategoryId: 103, image: '/images/ai-icon.png' },
+      { id: 5, name: '信鲍菇', price: 15, subCategoryId: 104, image: '/images/ai-icon.png' },
+      { id: 6, name: '梭子蟹', price: 15, subCategoryId: 105, image: '/images/ai-icon.png' },
+      { id: 7, name: '花甲', price: 5, subCategoryId: 106, image: '/images/ai-icon.png' },
+      { id: 8, name: '基围虾', price: 5, subCategoryId: 107, image: '/images/ai-icon.png' }
     ],
 
     // 当前展示的菜品
-    foods: [
-      { id: 1, name: 'A1', price: 38, categoryId: 1 },
-      { id: 2, name: 'A2', price: 28, categoryId: 1 }
-    ]
+    foods: []
   },
 
   // onLoad 当页面加载时自动执行，只会执行一次
@@ -43,6 +51,7 @@ Page({
     this.checkAuth();
     // 恢复登录信息
     loginApi.revertLoginInfo();
+    this.initDefaultCategorySelection();
     console.log('首页加载了');
   },
 
@@ -71,23 +80,74 @@ Page({
     // wx.navigateTo({ url: '/pages/ai/ai' });
   },
 
-  // 点击分类
-  selectCategory(e) {
-    const id = e.currentTarget.dataset.id;
+  initDefaultCategorySelection() {
+    const { categories } = this.data;
+    if (!categories || !categories.length) {
+      return;
+    }
+    const firstCategory = categories[0];
+    const children = firstCategory.children || [];
+    const vegetableCategory = children.find(item => item.name === '蔬菜');
+    const defaultSubCategoryId = vegetableCategory
+      ? vegetableCategory.id
+      : (children.length ? children[0].id : null);
     this.setData({
-      currentCategoryId: id
+      expandedCategoryId: firstCategory.id,
+      currentSubCategoryId: defaultSubCategoryId
     });
     this.filterFoods();
   },
 
-  // 根据分类筛选菜品
+  // 点击一级分类
+  toggleCategory(e) {
+    const id = e.currentTarget.dataset.id;
+    const { expandedCategoryId, categories } = this.data;
+    if (expandedCategoryId === id) {
+      this.setData({
+        expandedCategoryId: null,
+        currentSubCategoryId: null,
+        foods: []
+      });
+      return;
+    }
+    const selectedCategory = categories.find(item => item.id === id);
+    const firstSubCategoryId = selectedCategory && selectedCategory.children && selectedCategory.children.length
+      ? selectedCategory.children[0].id
+      : null;
+    this.setData({
+      expandedCategoryId: id,
+      currentSubCategoryId: firstSubCategoryId
+    });
+    this.filterFoods();
+  },
+
+  // 点击二级分类
+  selectSubCategory(e) {
+    const id = e.currentTarget.dataset.id;
+    this.setData({
+      currentSubCategoryId: id
+    });
+    this.filterFoods();
+  },
+
+  // 根据二级分类筛选菜品
   filterFoods() {
-    const { allFoods, currentCategoryId } = this.data;
-    const foods = allFoods.filter(item => item.categoryId === currentCategoryId);
+    const { allFoods, currentSubCategoryId } = this.data;
+    if (!currentSubCategoryId) {
+      this.setData({
+        foods: []
+      });
+      return;
+    }
+    const foods = allFoods
+      .filter(item => item.subCategoryId === currentSubCategoryId)
+      .slice(0, 5);
     this.setData({
       foods
     });
   },
+
+  onFoodDetailTap() {},
 
   // 检查授权，登录
   checkAuth() {

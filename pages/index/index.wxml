@@ -5,15 +5,27 @@
 
     <!-- 左侧分类 -->
     <view class="left">
-      <view 
-        wx:if="{{loginInfo}}"
-        wx:for="{{categories}}" 
-        wx:key="id"
-        class="category-item {{currentCategoryId === item.id ? 'active' : ''}}"
-        bindtap="selectCategory"
-        data-id="{{item.id}}"
-      >
-        {{item.name}}
+      <view wx:if="{{loginInfo}}">
+        <block wx:for="{{categories}}" wx:key="id">
+          <view
+            class="category-item {{expandedCategoryId === item.id ? 'active' : ''}}"
+            bindtap="toggleCategory"
+            data-id="{{item.id}}"
+          >
+            {{item.name}}
+          </view>
+          <view wx:if="{{expandedCategoryId === item.id}}" class="sub-category-list">
+            <view
+              wx:for="{{item.children}}"
+              wx:key="id"
+              class="sub-category-item {{currentSubCategoryId === item.id ? 'active' : ''}}"
+              catchtap="selectSubCategory"
+              data-id="{{item.id}}"
+            >
+              {{item.name}}
+            </view>
+          </view>
+        </block>
       </view>
     </view>
 
@@ -25,8 +37,11 @@
         wx:key="id"
         class="food-item"
       >
-        <text class="food-name">{{item.name}}</text>
-        <text class="food-price">￥{{item.price}}</text>
+        <image class="food-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="food-content">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-detail" bindtap="onFoodDetailTap" data-id="{{item.id}}">查看详情</text>
+        </view>
       </view>
     </view>
 
