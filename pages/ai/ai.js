@@ -26,6 +26,19 @@ Page({
     });
   },
 
+  onNewSessionTap() {
+    this.setData({
+      inputValue: '',
+      chatList: [
+        {
+          id: 1,
+          role: 'ai',
+          content: '你好，我是你的食材助手。你可以问我食材搭配和烹饪建议。'
+        }
+      ]
+    });
+  },
+
   onSendTap() {},
 
   onHistoryTap() {}
