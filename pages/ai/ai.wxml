@@ -1,11 +1,29 @@
 <view class="container">
-  <scroll-view class="chat-area" scroll-y="true">
-    <view wx:for="{{chatList}}" wx:key="id" class="chat-row {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
-      <view class="chat-bubble {{item.role === 'user' ? 'user-bubble' : 'ai-bubble'}}">
-        {{item.content}}
+  <scroll-view class="chat-area" scroll-y="true" scroll-into-view="{{scrollIntoViewId}}">
+    <view wx:for="{{chatList}}" wx:key="id" id="chat-item-{{item.id}}" class="chat-row {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
+      <view class="chat-item {{item.role === 'user' ? 'user-item' : 'ai-item'}}">
+        <view class="chat-bubble {{item.role === 'user' ? 'user-bubble' : 'ai-bubble'}}">
+          {{item.content}}
+        </view>
+        <text class="chat-timestamp">{{item.timestamp}}</text>
       </view>
     </view>
   </scroll-view>
+  <view wx:if="{{showHistoryPanel}}" class="history-panel">
+    <scroll-view class="history-list" scroll-y="true">
+      <view
+        wx:for="{{historyList}}"
+        wx:key="id"
+        class="history-item {{currentSessionId === item.id ? 'active' : ''}}"
+      >
+        <view class="history-main" bindtap="onSelectHistory" data-id="{{item.id}}">
+          <text class="history-question">{{item.lastQuestion}}</text>
+          <text class="history-time">{{item.timestamp}}</text>
+        </view>
+        <button class="history-del-btn" data-id="{{item.id}}" bindtap="onDeleteHistory">删除</button>
+      </view>
+    </scroll-view>
+  </view>
   <view class="input-area">
     <button class="new-session-btn" bindtap="onNewSessionTap">+</button>
     <input
