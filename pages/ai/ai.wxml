@@ -1,4 +1,20 @@
 <view class="container">
-  <text class="title">这是 AI 页面</text>
-  <button class="back-btn" bindtap="onBackHome">返回首页</button>
+  <scroll-view class="chat-area" scroll-y="true">
+    <view wx:for="{{chatList}}" wx:key="id" class="chat-row {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
+      <view class="chat-bubble {{item.role === 'user' ? 'user-bubble' : 'ai-bubble'}}">
+        {{item.content}}
+      </view>
+    </view>
+  </scroll-view>
+  <view class="input-area">
+    <input
+      class="question-input"
+      value="{{inputValue}}"
+      placeholder="请输入你的问题"
+      confirm-type="send"
+      bindinput="onInputChange"
+    />
+    <button class="input-btn send-btn" bindtap="onSendTap">发送</button>
+    <button class="input-btn history-btn" bindtap="onHistoryTap">历史</button>
+  </view>
 </view>
