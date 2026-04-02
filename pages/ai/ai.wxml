@@ -1,0 +1,4 @@
+<view class="container">
+  <text class="title">这是 AI 页面</text>
+  <button class="back-btn" bindtap="onBackHome">返回首页</button>
+</view>

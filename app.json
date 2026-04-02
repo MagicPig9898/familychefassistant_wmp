@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/myself/myself"
+    "pages/myself/myself",
+    "pages/ai/ai"
   ],
   "window": {
     "navigationBarTitleText": "我的小程序"

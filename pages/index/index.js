@@ -76,8 +76,9 @@ Page({
   // 点击 AI 按钮
   onAiBtnTap() {
     console.log('点击了 AI 按钮');
-    // 跳转到 AI 页面，或弹出对话框
-    // wx.navigateTo({ url: '/pages/ai/ai' });
+    wx.navigateTo({
+      url: '/pages/ai/ai'
+    });
   },
 
   initDefaultCategorySelection() {
