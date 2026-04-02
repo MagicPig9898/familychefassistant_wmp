@@ -1,6 +1,6 @@
 const loginApi = require('../../utils/login');
 const app = getApp();
-
+ 
 Page({
   data: {
     userInfo: null,
