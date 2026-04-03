@@ -1,19 +1,21 @@
 <!-- pages/myself/myself.wxml -->
 <view class="container">
 
-<!-- 上部分 -->
-<view class="header">
-  <view class="avatar">
-   
+  <!-- 上部分 -->
+  <view class="header">
+    <block wx:if="{{loginInfo && userInfo}}">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <text class="nickname">{{userInfo.nickName}}</text>
+    </block>
+    <view wx:else class="avatar"></view>
   </view>
-</view>
 
-<!-- 下部分 -->
-<view class="content">
-  <!-- bindtap等价于onclick -->
-  <button wx:if="{{!loginInfo}}" class="login-btn" bindtap="handleLogin">  
-    一键登录
-  </button>
-</view>
+  <!-- 下部分 -->
+  <view class="content">
+    <!-- bindtap等价于onclick -->
+    <button wx:if="{{!loginInfo}}" class="login-btn" bindtap="handleLogin">  
+      一键登录
+    </button>
+  </view>
 
 </view>

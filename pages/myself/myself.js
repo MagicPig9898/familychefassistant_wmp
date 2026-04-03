@@ -20,7 +20,7 @@ Page({
       console.log("code = "+ code)
       app.globalData.userInfo = 
       wx.request({
-        url: 'http://localhost:8080/api/v1/users/wxlogin',
+        url: 'http://10.9.123.162:8080/api/v1/users/wxlogin',
         method: 'POST',
         data: {
           code: code,

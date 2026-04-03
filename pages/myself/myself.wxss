@@ -13,6 +13,7 @@
   background-color: #FFD700;  /* 背景颜色（黄色） */
   width: 100%;  /* 横向铺满 */
   display: flex;  /* 使用 flex 布局 */
+  flex-direction: column;
   justify-content: center;  /* 水平居中（主轴是横向时） */
   align-items: center;  /* 垂直居中 */
 }
@@ -39,6 +40,12 @@
   /* 关键：让正方形变成圆形 */
   overflow: hidden;  
   /* 防止图片超出圆形区域（后面放头像用） */
+}
+
+.nickname {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: #333333;
 }
 
 .login-btn {
