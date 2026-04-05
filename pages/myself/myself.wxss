@@ -65,3 +65,14 @@
   /* 字体大小 */
 }
 
+.logout-btn {
+  width: 60%;
+  background-color: #ffffff;
+  color: #333333;
+  border-radius: 50rpx;
+  text-align: center;
+  padding: 12rpx 0;
+  font-size: 32rpx;
+  border: 1rpx solid #dddddd;
+}
+

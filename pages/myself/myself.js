@@ -20,7 +20,7 @@ Page({
       console.log("code = "+ code)
       app.globalData.userInfo = 
       wx.request({
-        url: 'http://10.9.123.162:8080/api/v1/users/wxlogin',
+        url: 'http://110.40.188.33:6100/api/v1/users/wxlogin',
         method: 'POST',
         data: {
           code: code,
@@ -67,6 +67,27 @@ Page({
    });
   },
 
+  handleLogout() {
+    wx.showModal({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      success: (res) => {
+        if (!res.confirm) {
+          return;
+        }
+        app.globalData.loginInfo = null;
+        wx.removeStorageSync('loginInfo');
+        this.setData({
+          loginInfo: null
+        });
+        wx.showToast({
+          title: '已退出登录',
+          icon: 'success'
+        });
+      }
+    });
+  },
+
   /**
    * 生命周期函数--onLoad：页面“创建时”执行（一次）
    */
@@ -81,12 +102,12 @@ Page({
    * 生命周期函数--页面“被看到时”执行（多次）
    */
   onShow() {
-    console.log('myself页面准备显示...');
+    console.log('myself页面onshow...');
     this.setData({
       userInfo: app.globalData.userInfo,
       loginInfo: app.globalData.loginInfo 
     });
-    console.log('myself页面显示了');
+    console.log('myself页面onshow end');
   },
 
   /**

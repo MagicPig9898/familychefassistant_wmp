@@ -5,7 +5,7 @@
 
     <!-- 左侧分类 -->
     <view class="left">
-      <view wx:if="{{loginInfo}}">
+      <view>
         <block wx:for="{{categories}}" wx:key="id">
           <view
             class="category-item {{expandedCategoryId === item.id ? 'active' : ''}}"
@@ -48,7 +48,7 @@
   </view>
 
   <!-- AI 悬浮按钮（可拖拽） -->
-  <movable-area class="movable-area">
+  <movable-area class="movable-area" wx:if="{{loginInfo}}">
     <movable-view 
       class="ai-btn" 
       direction="all" 

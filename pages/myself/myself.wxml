@@ -12,9 +12,11 @@
 
   <!-- 下部分 -->
   <view class="content">
-    <!-- bindtap等价于onclick -->
     <button wx:if="{{!loginInfo}}" class="login-btn" bindtap="handleLogin">  
       一键登录
+    </button>
+    <button wx:if="{{loginInfo}}" class="logout-btn" bindtap="handleLogout">
+      退出登录
     </button>
   </view>
 

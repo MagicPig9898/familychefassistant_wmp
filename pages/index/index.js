@@ -57,20 +57,20 @@ Page({
 
   // onShow 当页面显示时自动执行，每次进入页面都会执行
   onShow() {
-    console.log('首页准备显示...');
+    console.log('首页onshow...');
     if (!app.globalData.loginInfo) {
-      console.log("没有登录过，提示先登录")
+      console.log("没有登录，提示先登录")
       wx.showToast({
         title: '请先登录',
         icon: 'none'
       });
-      return;
     } 
     this.setData({
       userInfo: app.globalData.userInfo,
       loginInfo: app.globalData.loginInfo 
     });
-    console.log('首页显示了');
+    console.log(this.loginInfo)
+    console.log('首页onshow end');
   },
 
   // 点击 AI 按钮
